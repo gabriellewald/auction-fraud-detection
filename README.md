@@ -107,3 +107,10 @@ Considering it all, the best performing model was the Decision Tree Classifier, 
 <p align="center">
 <img src='images/decision-tree-best-perform.png' width="600"> 
 </p>
+
+
+For more details and recommendation:
+[Full Report](https://github.com/gabriellewald/auction-fraud-detection/blob/main/report-auction-fraud-detection.pdf)
+
+## Thank you note:
+**Special thanks to my mentor [Nadav](https://github.com/nrindler), for his patience and enthusiasm for teaching.**
