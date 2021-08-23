@@ -106,7 +106,7 @@ What are the best metrics to evaluate our model?
 
 Precision and recall are important metrics in this case. Our model ideally should correctly identify the highest number of 'robots' as 'robots', that is high True Positive rate. And, it should minimize type 1 error and not have 'humans' classified as 'robots'. In summary, we are looking for the model that returns the highest value of true positives and a low value for false positives. Since, the goal here is to identify 'robot' bidders (those generating fraudulent bids), the preference is for a model with high True Positive. This is another way to say we wish for Recall to be higher, so 'robots' can be correctly classified. We still want to keep false positive low, but in case we misclassify a human for a robot, it won't be a damaging as keeping 'robot' bidders on the website.
 
-Considering it all, the best performing model was the Decision Tree Classifier, which classified the highest number of robots correctly.
+Considering it all, the best performing model was the Decision Tree Classifier, which classified the highest number of robots correctly. If we were looking at accuracy only, then we would choose the Random Forest Classifier.
 
 
 For more details and recommendation:
