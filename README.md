@@ -113,4 +113,4 @@ For more details and recommendation:
 [Full Report](https://github.com/gabriellewald/auction-fraud-detection/blob/main/report-auction-fraud-detection.pdf)
 
 ## Thank you note:
-**Special thanks to my mentor [Nadav](https://github.com/nrindler), for his patience and enthusiasm for teaching.**
+**Thanks [Nadav](https://github.com/nrindler), for your support and mentoring.**
