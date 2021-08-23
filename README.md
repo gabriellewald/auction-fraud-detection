@@ -98,15 +98,15 @@ What are the best metrics to evaluate our model?
 - Recall: ability of the model to identify all relevant instances, that is True Positive Rate, aka Sensitivity. We want the least false positive, minimize 'humans' classified as 'robots'.
 - F1 Score: returns a harmonic mean of precision and recall, indicating a balance between Precision & Recall. Therefore, a model that has a high F1 score can be a good model for us too.
 
+<p align="center">
+<img src='images/models-comparison.png' width="600"> 
+</p>
+
 ## 5. Conclusion
 
 Precision and recall are important metrics in this case. Our model ideally should correctly identify the highest number of 'robots' as 'robots', that is high True Positive rate. And, it should minimize type 1 error and not have 'humans' classified as 'robots'. In summary, we are looking for the model that returns the highest value of true positives and a low value for false positives. Since, the goal here is to identify 'robot' bidders (those generating fraudulent bids), the preference is for a model with high True Positive. This is another way to say we wish for Recall to be higher, so 'robots' can be correctly classified. We still want to keep false positive low, but in case we misclassify a human for a robot, it won't be a damaging as keeping 'robot' bidders on the website.
 
 Considering it all, the best performing model was the Decision Tree Classifier, which classified the highest number of robots correctly.
-
-<p align="center">
-<img src='images/decision-tree-best-perform.png' width="600"> 
-</p>
 
 
 For more details and recommendation:
