@@ -69,7 +69,7 @@ Informed by the EDA, the major differences between robots and humans were taken 
 ## 4. Preprocessing and Modeling
 [Preprocessing and Modeling Report](https://github.com/gabriellewald/auction-fraud-detection/blob/main/notebooks/4_pre_processing_modeling.ipynb)
 
-- Total off 23 features were created summarizing information at the bidder_id level.
+- Total of 23 features were created summarizing information at the bidder_id level.
 - The merchandise column was remapped to have one product per column with the number of bids for each bidder.
 - Dataset was filtered at bidder_id level, 1984 rows.
 
