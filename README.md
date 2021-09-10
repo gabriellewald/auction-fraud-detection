@@ -94,7 +94,7 @@ What are the best metrics to evaluate our models?
 - AUC measures the ability of a classifier to distinguish between classes. The higher the AUC, the better the performance of the model at distinguishing between the positive and negative classes. It is plotted with Sensitivity against False Positive rate (1-Specificity). An AUC near 1 means the model has a good measure of separability.
 
 <p align="center">
-<img src='images/models-comparison.png' width="600"> 
+<img src='images/models-comparison.png' width="400"> 
 </p>
 
 ## 5. Conclusion
