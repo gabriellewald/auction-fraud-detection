@@ -89,8 +89,7 @@ Informed by the EDA, the major differences between robots and humans were consid
 What are the best metrics to evaluate our models?
 
 - Recall is the ability of the model to identify all relevant instances, that is True Positive Rate, aka Sensitivity. It quantifies the number of correct positive predictions made out of all positive predictions that could have been made. We want the highest number of robots correctly classified as robots.
-
-- Recall = True Positives/ (True Positives + False Negatives)
+  - Recall = True Positives/ (True Positives + False Negatives)
 
 - AUC measures the ability of a classifier to distinguish between classes. The higher the AUC, the better the performance of the model at distinguishing between the positive and negative classes. It is plotted with Sensitivity against False Positive rate (1-Specificity). An AUC near 1 means the model has a good measure of separability.
 
