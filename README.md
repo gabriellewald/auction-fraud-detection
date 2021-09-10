@@ -23,7 +23,7 @@ There are two datasets. The bidder dataset includes a list of bidder information
 
 Challenges included: obfuscated variables to protect privacy and variables that represent unique identifiers. There is a time variable and categorical variables that represent merchandise, country and cellphone devices.
 
-The datasets were merged on bidder_id to make it easier to access information. Although the dataset was fairly clean, there were 29 missing data points for several variables that were mapped to human bids. Since the interest is in identifying robot bids, the rows corresponding to these missing values were dropped. All columns were kept. Regarding the obfuscated fields, they are an issue for interpretability, but are also going to be useful when performing EDA and feature engineering. The columns were rearranged for convinience and the new DataFrame was saved to csv.
+The datasets were merged on bidder_id to make it easier to access information. Although the dataset was fairly clean, there were 29 missing data points for several variables that were mapped to human bids. Since the interest is in identifying robot bids, the rows corresponding to these missing values were dropped. All columns were kept. Regarding the obfuscated fields, they are an issue for interpretability, but are useful when performing EDA and feature engineering.
 
 ## 2. Exploratory Data Analysis
 [Exploratory Data Analysis Report](https://github.com/gabriellewald/auction-fraud-detection/blob/main/notebooks/2_exploratory_data_analysis.ipynb)
@@ -46,32 +46,37 @@ The data is highly unbalanced from the bidders and bids perspective. Humans repr
 
 The initial hypotheses held true. There is a significant difference in the mean and median number of occurrences for independent variables between human and robot. The mean number of bids per robot is 4004 and for humans is 1443, the median number of bids per robot is 716, while for humans is only 14. The mean number of IP address per robot is 2388, for humans is 581, the median for robots is 290, and 11 for humans. A similar pattern occurs in the other variables (number of auctions, countries, devices, and urls) with robots having a higher number of occurrences associated with their bidder id.
 
+<p align="center">
+<img src='images/mean-variables-distribution.png' width="400"> 
+<img src='images/median-features-distribution.png' width="400">
+</p>
+
+
 ## 3. Feature Engineering
 [Feature Engineering Report](https://github.com/gabriellewald/auction-fraud-detection/blob/main/notebooks/3_feature_engineering.ipynb)
 
-Informed by the EDA, the major differences between robots and humans were taken into account. The features were created around the number of occurrences, mean and median which showed to be significantly different for humans and robots behavior in the analysis. Some of the features created:
+Informed by the EDA, the major differences between robots and humans were considered. Features were created around the number of occurrences, mean and median which showed to be significantly apart in the analysis. These features will be fed into the classification model so the model can learn to classify the bidders into robots or humans. Some of the features created:
 
-- Number of bids per auction by bidder_id
-- Number of countries per bidder_id
-- Number of IP addresses per bidder_id
-- Number of URLs per bidder_id
-- Number of same IP addresses per auction for bidder_id
-- Mean number of bids per bidder_id
-- Median number of bids per bidder_id
-- Mean number of countries per bidder_id
-- Median number of countries per bidder_id
-- Mean number of IP per device per bidder_id
+- Mean/median number of bids per auction per user
+- Number of unique auctions per user
+- Proportion of unique ip addresses to bids per user
+- Mean/median number of IP addresses per auction per user
+- Total unique ip and url per user
+- Mean/median number of url per device per user
+- Mean number of auctions for each country per user
 
 <p align="center">
-<img src='images/feature-distribution-plot.png' width="600"> 
+<img src='images/feature-distribution.png' width="600"> 
 </p>
 
 ## 4. Preprocessing and Modeling
 [Preprocessing and Modeling Report](https://github.com/gabriellewald/auction-fraud-detection/blob/main/notebooks/4_pre_processing_modeling.ipynb)
 
-- Total of 23 features were created summarizing information at the bidder_id level.
+- 16 features were created summarizing information at the bidder_id level.
 - The merchandise column was remapped to have one product per column with the number of bids for each bidder.
 - Dataset was filtered at bidder_id level, 1984 rows.
+- The original columns were dropped, except for the outcome column.
+- Split into train (80%) and test data (20%)
 
 **Models:**
 
@@ -79,24 +84,15 @@ Informed by the EDA, the major differences between robots and humans were taken 
 - Random Forest
 - Decision Trees
 
-Based on an initial modeling generated to identify the most promising algorithm accuracy, Random Forest Classifier comes first, followed by Logistic Regression, and lastly the Decision Tree Classifier.
-
 **Evaluation:**
 
-The target variable (robot or human) is not balanced and the data is skewed, for this reason accuracy is not necessarily the best metric of evaluation. We want to consider metrics like Precision, Recall, and F-score.
+What are the best metrics to evaluate our models?
 
-First though, let's have a better understanding of the terms that form the basis for these.
+- Recall is the ability of the model to identify all relevant instances, that is True Positive Rate, aka Sensitivity. It quantifies the number of correct positive predictions made out of all positive predictions that could have been made. We want the highest number of robots correctly classified as robots.
 
-- True Positive: label predicted 'robot' and it is in fact 'robot' (predicted 1.0 and it's 1.0).
-- True Negative: label was predicted 'human' and it is in fact 'human' (predicted 0.0 and it's 0.0).
-- False Positive: label was predicted 'robot' but it is in fact 'human' (predicted 1.0 but it's 0.0). Type 1 error or incorrect rejection of Null Hypothesis.
-- False Negative: label was predicted 'human' but it is in fact 'robot' (predicted 0.0 but it's 1.0). Type 2 error or failure to reject of Null Hypothesis.
+- Recall = True Positives/ (True Positives + False Negatives)
 
-What are the best metrics to evaluate our model?
-
-- Precision: ability of the model to return only relevant instances. In this case, we want to minimize false negative, and don't want 'robots' to be classified as 'humans'.
-- Recall: ability of the model to identify all relevant instances, that is True Positive Rate, aka Sensitivity. We want the least false positive, minimize 'humans' classified as 'robots'.
-- F1 Score: returns a harmonic mean of precision and recall, indicating a balance between Precision & Recall. Therefore, a model that has a high F1 score can be a good model for us too.
+- AUC measures the ability of a classifier to distinguish between classes. The higher the AUC, the better the performance of the model at distinguishing between the positive and negative classes. It is plotted with Sensitivity against False Positive rate (1-Specificity). An AUC near 1 means the model has a good measure of separability.
 
 <p align="center">
 <img src='images/models-comparison.png' width="600"> 
@@ -104,12 +100,26 @@ What are the best metrics to evaluate our model?
 
 ## 5. Conclusion
 
-Precision and recall are important metrics in this case. Our model ideally should correctly identify the highest number of 'robots' as 'robots', that is high True Positive rate. And, it should minimize type 1 error and not have 'humans' classified as 'robots'. In summary, we are looking for the model that returns the highest value of true positives and a low value for false positives. Since, the goal here is to identify 'robot' bidders (those generating fraudulent bids), the preference is for a model with high True Positive. This is another way to say we wish for Recall to be higher, so 'robots' can be correctly classified. We still want to keep false positive low, but in case we misclassify a human for a robot, it won't be a damaging as keeping 'robot' bidders on the website.
+Recall and AUC are the metrics we want to consider. In fraud detection it is critical to correctly classify fraud or what is causing frauds, in this case we want to identify the “robot” users. Because Recall is the measure of relevant instances (True Positives) it is a good metric to evaluate the models. We want a model with a high Recall rate.
 
-Considering it all, the best performing model was the Decision Tree Classifier, which classified the highest number of robots correctly. If we were looking at accuracy only, then we would choose the Random Forest Classifier.
+The AUC metric provides an understanding of how the model is performing with True Positives and False Positives (humans classified as robots). Ideally the best model classifies all 'robots' as 'robots' (True Positive), and it does not make type 1 error (False Positive), classifying 'humans’ as 'robots'. A model that correctly identifies all robots as robots and makes no type I error would return an AUC of 1. That’s what we want to see, an AUC score that is near 1.
 
+**In case of misclassification**, the preference is for type I error (False Positive: humans classified as robots) vs type II error (False Negative: robots classified as humans). The cost of keeping robots on the website is more costly than having humans misclassified as robots banned *temporarily* from the website. Keeping robots misclassified as humans on the website will not improve clients satisfaction.
 
-For more details and recommendation:
+In addition, in case of type I error, the **use of CAPTCHA can be a good approach**, allowing humans misclassified as robots to pass through the initial ban and continue to use the website.
+
+Considering all, the Decision Tree classifier has the highest True Positive rate (Recall) and a good AUC score, and the Random Forest classifier has the highest AUC score. However, given the unbalanced nature of this problem the best performing model in identifying True Positives (Decision Tree classifier) still only identifies 8 out of 23 robots. That’s a 35% success rate, which is not good enough to move to production. If requiring more data was possible, it would be useful to have a larger dataset. The sample size for this problem is relatively small (1984 users with 103 labeled robots), with 80% reserved for training, the test data is left with 397 users with 23 labeled as robots. 
+
+Nevertheless, there are still some things that can be done with the current data to further improve the models like:
+
+- Create new features from the time column which due to time constraint I was not able to add. But time features showed to be very useful for other Kaggle competitors working on this same problem. Features like the following are very likely to improve classification:
+- Maximum number of bids made within a 20 minute span;
+- Median time between a user’s bid and that user’s previous bid;
+- Proportion of bidder’s bid by day (~9 days of bid);
+- Number of simultaneous bids;
+- Try other machine learning models like XGBoost, Support Vector Machine and Naive Bayes.
+
+For more details:
 [Full Report](https://github.com/gabriellewald/auction-fraud-detection/blob/main/report-auction-fraud-detection.pdf)
 
 ## Thank you note:
