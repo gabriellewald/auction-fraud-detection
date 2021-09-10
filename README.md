@@ -1,7 +1,7 @@
 <img src='images/robots-greeting.png' width="700">
 
 # Auction Fraud Detection
-## Is it Human or Robot?
+## Human or Robot?
 ### Predicting fraud through classification machine learning models and feature engineering.
 
 
